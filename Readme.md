@@ -13,3 +13,16 @@ Como hacemos con los textos? Hay que encontrar una forma de que solo se actualic
 Que hacemos con el analisis de la competencia? 
 Necesitamos el token de una cuenta de retailer. Como lo podemos obtener? Le podemos preguntar a Luquitas que se le ocurre.
 Tal vez el analisis de la competencia pueda ser algo basico, donde mostramos los fullfillment times, la cantidad de reviews y ratings, y la cantidad minima de compra.
+
+
+- Hacer una request para obtener los page views de una cuenta (done)
+- Guardar los resultados en un csv en google cloud storage (done)
+- Consumir los resultados desde google cloud storage (done)
+- Hacer un grafico con los resultados
+- Mostrar de alguna forma el progreso de la request y cuanto falta (done)
+- Ver si lo del cambio del nombre no rompio nada (done)
+
+Podemos hacer que el usuario se registre para una version gratuita? En el google spreadsheet guardasmos una tercer columna llamada "plan".
+
+
+Es la version gratis, asique no esta mal que tenga que carga la cookie cada vez que quiera ingresar

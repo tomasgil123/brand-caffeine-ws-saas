@@ -5,7 +5,7 @@ import pandas as pd
 
 from dashboard.create_client_dashboard import create_dashboard
 # from utils import save_user_log
-from utils import get_data_from_google_spreadsheet
+from dashboard.utils import get_data_from_google_spreadsheet
 
 # necesitamos para el user log gnerar algun tipo de asi podemos identificar a la persona.
 # tal vez una cookie en el cliente?
@@ -56,6 +56,7 @@ def check_password():
             return
         else:
             st.session_state["user_name"] = st.session_state["username"]
+            st.session_state["plan"] = df_credentials['plan'].values[0]
             st.session_state["user_exists"] = True
 
         # if password is correct
@@ -69,7 +70,7 @@ def check_password():
         return True
 
     # Show inputs for username + password.
-    st.title("Login to FaireExperts analytics dashboard")
+    st.title("Login to Brand Caffeine analytics dashboard")
     login_form()
     if "user_exists" in st.session_state and not st.session_state["user_exists"]:
         st.error("😕 User doesn't seem to exist")
@@ -101,7 +102,7 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Account','Sales']
+report_options = ['Account','Page views']
 
 default_report_option = report_options[0]
 
@@ -109,4 +110,4 @@ st.sidebar.title(st.session_state['user_name'])
 
 report_option_selected = st.sidebar.radio("Select an app section", options=report_options, index=report_options.index(default_report_option), key = 2)
 
-create_dashboard(selected_client=st.session_state["user_name"], selected_report=report_option_selected)
+create_dashboard(selected_client=st.session_state["user_name"], selected_report=report_option_selected, type_plan=st.session_state["plan"])
