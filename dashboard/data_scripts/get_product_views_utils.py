@@ -83,6 +83,9 @@ def get_page_views_for_specific_period(start_at, end_at, cookie):
                 print(f"Rate limit exceeded. Retrying in 30 seconds (Retry {retry_count + 1}/3)")
                 time.sleep(30)  # Wait for 30 seconds before retrying
                 retry_count += 1
+            elif response.status_code == 401:
+                print(f"Unauthorized. Please check your cookie.")
+                break
             else:
                 print(response)
                 print(f"An error occurred:", response.status_code)
