@@ -57,6 +57,7 @@ def check_password():
         else:
             st.session_state["user_name"] = st.session_state["username"]
             st.session_state["plan"] = df_credentials['plan'].values[0]
+            st.session_state["brand_name_in_faire"] = df_credentials['brand_name_in_faire'].values[0]
             st.session_state["user_exists"] = True
 
         # if password is correct
@@ -102,7 +103,7 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Account','Page views']
+report_options = ['Account','Page views', 'Email marketing analytics']
 
 default_report_option = report_options[0]
 
@@ -110,4 +111,4 @@ st.sidebar.title(st.session_state['user_name'])
 
 report_option_selected = st.sidebar.radio("Select an app section", options=report_options, index=report_options.index(default_report_option), key = 2)
 
-create_dashboard(selected_client=st.session_state["user_name"], selected_report=report_option_selected, type_plan=st.session_state["plan"])
+create_dashboard(selected_client=st.session_state["user_name"], selected_report=report_option_selected, type_plan=st.session_state["plan"], brand_name_in_faire=st.session_state["brand_name_in_faire"])

@@ -9,6 +9,7 @@ import json
 from google.cloud import storage
 from io import StringIO
 from google.api_core.exceptions import NotFound
+import requests
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -27,6 +28,44 @@ def is_cookie_expired(cookie_string):
             return False
     else:
         return True
+
+def get_brand_token(brand_name, cookie):
+    endpoint = "https://www.faire.com/api/v2/search/suggestions"
+
+    print(f"Searching for brand: {brand_name}")
+
+    default_user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    headers = {
+        'Content-Type': 'application/json',
+        'User-Agent': default_user_agent,
+        'Cookie': cookie
+    }
+
+    payload = {
+        "query": f"{brand_name}"
+    }
+
+    try:
+        # Make the GET request to the API
+        response = requests.post(endpoint, headers=headers, json=payload)
+        if response.status_code == 200:
+                # Parse the JSON response
+                data = response.json()
+                suggested_brands = data.get("suggested_brands", [])
+                if len(suggested_brands) > 0:
+                    brand_token = suggested_brands[0].get('token', None)
+                    return brand_token
+                else:
+                    print("No brand found")
+                    return None
+        else:
+            print(f"An error occurred, status code not 200: {response.text}")
+            return None
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+    
 
 def get_user_from_cookie(cookie_string):
     """Extracts the user from the cookie."""
