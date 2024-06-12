@@ -9,7 +9,7 @@ def create_dashboard(selected_client, selected_report, type_plan, brand_name_in_
         st.markdown("""
                 # Account
                 """)
-        build_account_dashboard()
+        build_account_dashboard(selected_client, brand_name_in_faire)
         
     if selected_report == "Page views":
 
