@@ -23,6 +23,13 @@ def create_competitors_section(selected_client, brand_name_in_faire):
 
     if not df_competitors.empty:
 
+        st.markdown("""
+                    #### Brands considered competitors:
+                    """)
+        filtered_brands = df_competitors[df_competitors['Brand Name'] != brand_name_in_faire]['Brand Name']
+        brand_string = ', '.join(filtered_brands)
+        st.write(brand_string)
+
         recommendations = get_competitors_recommendations_main_attributes(selected_client)
 
         if recommendations is not None:
