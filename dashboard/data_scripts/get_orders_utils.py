@@ -1,8 +1,7 @@
-# token, creation_reason, source, brand_contacted_at, first_order_for_brand, very_first_order_for_brand, 
-# retailer_token, payout_total (amount_cents)
-
 import requests
 import time
+import streamlit as st
+
 from dashboard.data_scripts.get_orders_items import (combine_order_items_info, get_order_items_info)
 
 
@@ -196,6 +195,8 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
         # we append the items order data to the dataframe
         combine_order_items_info(items_order, items_order_page)
 
+    # Initialize a progress bar
+    progress_bar = st.progress(0)
     # we loop over the different pages and get the orders info
     if page_count > 1:
         for page_number in range(2, page_count + 1):
@@ -237,6 +238,7 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
                 # we append the items order data to the dataframe
                 combine_order_items_info(items_order, items_order_page)
                 break
+            progress_bar.progress(page_number / (page_count + 1))
 
     data = {
         "tokens": tokens,

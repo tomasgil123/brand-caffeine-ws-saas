@@ -61,12 +61,16 @@ def upload_orders_info(brand_token, client_name, cookie):
     df_orders_data = pd.DataFrame(data_orders)
     df_order_items_data = pd.DataFrame(data_order_items)
 
-    df_orders = pd.concat([df_orders, df_current_orders], ignore_index=True)
-    df_items_order = pd.concat([df_items_order, df_current_order_items], ignore_index=True)
+    df_orders = pd.concat([df_orders_data, df_current_orders], ignore_index=True)
+    df_items_order = pd.concat([df_order_items_data, df_current_order_items], ignore_index=True)
 
     # we drop duplicates
     df_orders = df_orders.drop_duplicates(subset='tokens', keep='first')
     df_items_order = df_items_order.drop_duplicates(subset='token', keep='first')
+
+    # we delete previous files
+    delete_file_from_cloud_storage(bucket_name, f"{client_name}_orders")
+    delete_file_from_cloud_storage(bucket_name, f"{client_name}_orders_items")
 
     upload_result_orders = upload_dataframe_to_cloud_storage(bucket_name, source_blob_name_orders, df_orders_data)
     upload_result_order_items = upload_dataframe_to_cloud_storage(bucket_name, source_blob_name_order_items, df_order_items_data)

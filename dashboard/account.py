@@ -6,6 +6,7 @@ from dashboard.data_scripts.get_product_views import (upload_product_views)
 from dashboard.data_scripts.get_competitors_data import (upload_competitors_info, get_competitors_data, 
                                                          upload_competitors_recommendations_main_attributes,
                                                          upload_competitors_summary_main_attributes)
+from dashboard.data_scripts.get_orders import (upload_orders_info)
 from dashboard.charts.competitors_charts_utils import (get_main_attributes)
 from dashboard.utils_chatgpt import OpenaiInsights
 
@@ -59,6 +60,29 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
             else:
                 st.error('An error occurred while updating the page views data.')
 
+    if st.button("Update Faire orders data"):
+        # if st.session_state["user_cookie"] is empty display an error message
+        if "user_cookie" not in st.session_state:
+            st.error("Please, go to the 'Account' section and enter a cookie value.")
+            return
+        # we check if the cookie is expired
+        is_expired = is_cookie_expired(st.session_state["user_cookie"])
+        if is_expired:
+            st.error("The cookie is expired. Please, go to the 'Account' section and enter a new cookie value.")
+            return
+        with st.spinner('Updating orders data...'):
+            brand_token = get_brand_token(brand_name=brand_name_in_faire, cookie=st.session_state["user_cookie"])
+            if brand_token is None:
+                st.error("Brand name doesn't seem to belong a a brand currently in Faire.")
+                return
+            else:
+                result = upload_orders_info(brand_token=brand_token, client_name=selected_client, cookie=st.session_state["user_cookie"])
+                if result:
+                    st.success('Orders info updated!')
+                    st.experimental_rerun()
+                else:
+                    st.error('An error occurred while updating the orders data.')
+
     # we add some empty space
     st.write("")
     st.write("")
@@ -90,16 +114,6 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
                 result = upload_competitors_info(client_name=selected_client,brand_ids=brands_tokens)
                 if result:
                     st.success('Competitors data updated!')
-                    df_competitors, _ = get_competitors_data(selected_client)
-
-                    insights = OpenaiInsights()
-                    string_dataframe = df_competitors.to_string(index=False)
-                    chatgpt_insights = insights.generate_insights({"prompt_name": "Competitors", "brand_name": brand_name_in_faire, "string_data": string_dataframe})
-
-                    print("--------")
-                    print(chatgpt_insights) 
-                    print("--------")
-                    # we need to write summary and recommendations using Chat gpt
                     st.experimental_rerun()
                 else:
                     st.error('An error occurred while updating the competitors data.')
@@ -107,7 +121,7 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
             st.error("None of the brands entered seem to be currently present in Faire.")
             return
         
-    if st.button("Get insights"):
+    if st.button("Get insights competitors"):
         df_competitors, _ = get_competitors_data(selected_client)
 
         df_main_attributes = get_main_attributes(df_competitors)
@@ -120,8 +134,3 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
 
         upload_competitors_summary_main_attributes(client_name=selected_client, text=chatgpt_insights_summary_main_attributes)
         upload_competitors_recommendations_main_attributes(client_name=selected_client, text=chatgpt_insights_recommendations_main_attributes)
-
-        #upload_competitors_recommendations_main_attributes()
-        # print("--------")
-        # print(chatgpt_insights) 
-        # print("--------")
