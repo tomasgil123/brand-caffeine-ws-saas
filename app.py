@@ -7,9 +7,6 @@ from dashboard.create_client_dashboard import create_dashboard
 # from utils import save_user_log
 from dashboard.utils import get_data_from_google_spreadsheet
 
-# necesitamos para el user log gnerar algun tipo de asi podemos identificar a la persona.
-# tal vez una cookie en el cliente?
-
 openai_api_key = st.secrets["openai_api_key"]
 
 if openai_api_key != "":
@@ -103,7 +100,7 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Account','Recommendations for Outranking Competitors']
+report_options = ['Account','Recommendations for Outranking Competitors', 'Recommendations to Improve Email Marketing']
 
 default_report_option = report_options[0]
 

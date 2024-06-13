@@ -19,11 +19,11 @@ def create_dashboard(selected_client, selected_report, type_plan, brand_name_in_
     #             """)
     #     create_page_views_section(selected_client, type_plan)
     
-    # if selected_report == "Email marketing analytics":
-    #     st.markdown("""
-    #             # Email Marketing Analytics
-    #             """)
-    #     create_email_marketing_section(selected_client, type_plan, brand_name_in_faire)
+    if selected_report == "Recommendations to Improve Email Marketing":
+        st.markdown("""
+                # Recommendations to Improve Email Marketing
+                """)
+        create_email_marketing_section(selected_client, type_plan, brand_name_in_faire)
     
     if selected_report == "Recommendations for Outranking Competitors":
         st.markdown("""

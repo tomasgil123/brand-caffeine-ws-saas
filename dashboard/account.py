@@ -10,6 +10,8 @@ from dashboard.data_scripts.get_orders import (upload_orders_info)
 from dashboard.charts.competitors_charts_utils import (get_main_attributes)
 from dashboard.utils_chatgpt import OpenaiInsights
 
+from dashboard.recommendations.email_marketing import upload_marketing_recommendations
+
 def build_account_dashboard(selected_client, brand_name_in_faire):
     st.markdown("""
                 ### Enter your Faire cookie
@@ -121,7 +123,7 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
             st.error("None of the brands entered seem to be currently present in Faire.")
             return
         
-    if st.button("Get insights competitors"):
+    if st.button("Create competitors recommendations"):
         df_competitors, _ = get_competitors_data(selected_client)
 
         df_main_attributes = get_main_attributes(df_competitors)
@@ -134,3 +136,9 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
 
         upload_competitors_summary_main_attributes(client_name=selected_client, text=chatgpt_insights_summary_main_attributes)
         upload_competitors_recommendations_main_attributes(client_name=selected_client, text=chatgpt_insights_recommendations_main_attributes)
+
+    if st.button("Create email marketing recommendations"):
+        if "user_cookie" not in st.session_state:
+            st.error("Please, go to the 'Account' section and enter a cookie value.")
+            return
+        upload_marketing_recommendations(client_name=selected_client, cookie=st.session_state["user_cookie"])

@@ -11,13 +11,21 @@ def get_orders_data(client_name):
     bucket_name = "faire_orders"
     source_blob_name = f"{client_name}_orders"
 
-    df_orders = download_csv_from_cloud_storage(bucket_name, source_blob_name)
+    df_orders, blob_name = download_csv_from_cloud_storage(bucket_name, source_blob_name)
 
     # df_orders is None we return an empty dataframe
     if df_orders is None:
-        return pd.DataFrame()
+        return pd.DataFrame(), blob_name
     else:
-        return df_orders
+        df_orders['payout_total_values'] = df_orders['payout_total_values']/100
+
+        # Convert 'brand_contacted_at_values' to datetime
+        df_orders['brand_contacted_at_values'] = pd.to_datetime(df_orders['brand_contacted_at_values'], unit='ms')
+
+        # Filter orders where creation_reasons is equal to NEW_ORDER
+        df_orders = df_orders[(df_orders['creation_reasons'] == 'NEW_ORDER') & ((df_orders['states'] == 'SHIPPED') | (df_orders['states'] == 'DELIVERED'))]
+
+        return df_orders, blob_name
 
 def get_order_items_data(client_name):
 
