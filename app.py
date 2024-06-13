@@ -103,7 +103,7 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Account','Page views', 'Email marketing analytics']
+report_options = ['Account','Recommendations for Outranking Competitors']
 
 default_report_option = report_options[0]
 

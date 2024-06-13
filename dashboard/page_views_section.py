@@ -16,7 +16,7 @@ def create_page_views_section(selected_client, type_plan):
 
     # id dataframe is empty tell user to click the update button
     if df_page_views is None or df_page_views.empty:
-        st.write("No page views data available. Click the button below to update the data.")
+        st.write("No page views data available. Go to the 'Account' section to update it.")
 
     if blob_name is not None:
         date_last_update = get_date_from_blob_name(blob_name)

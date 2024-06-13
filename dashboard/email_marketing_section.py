@@ -14,7 +14,7 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
 
     # id dataframe is empty tell user to click the update button
     if df_email_marketing is None or df_email_marketing.empty:
-        st.write("No email marketing data available. Click the button below to update the data.")
+        st.write("No email marketing data available. Go to the 'Account' section to update it.")
     
     if blob_name is not None:
         date_last_update = get_date_from_blob_name(blob_name)

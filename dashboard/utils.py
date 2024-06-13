@@ -206,7 +206,62 @@ def upload_dataframe_to_cloud_storage(bucket_name, destination_blob_name, df):
     except Exception as e:
         print(f"An error occurred: {e}")
         return False
-    
+
+def upload_text_file_to_cloud_storage(bucket_name, destination_blob_name, text):
+    try:
+        # Create credentials object from the dictionary
+        credentials = Credentials.from_service_account_info(creds_dict)
+
+        # Create a client to interact with the Google Cloud Storage API
+        storage_client = storage.Client(credentials=credentials, project=creds_dict["project_id"])
+
+        # Get the bucket where the file will be stored
+        bucket = storage_client.get_bucket(bucket_name)
+
+        # Create a blob (file) in the bucket
+        blob = bucket.blob(destination_blob_name)
+
+        # Upload the text to the blob
+        blob.upload_from_string(text, content_type='text/plain')
+
+        print(f"Text successfully uploaded to '{destination_blob_name}' in bucket '{bucket_name}'.")
+        return True
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+
+def download_text_file_from_cloud_storage(bucket_name, source_blob_name):
+    try:
+        # Create credentials object from the dictionary
+        credentials = Credentials.from_service_account_info(creds_dict)
+
+        # Create a client to interact with the Google Cloud Storage API
+        storage_client = storage.Client(credentials=credentials, project=creds_dict["project_id"])
+
+        # Get the bucket where the file is stored
+        bucket = storage_client.get_bucket(bucket_name)
+
+        blobs = bucket.list_blobs(prefix=source_blob_name)
+
+        text_data = None
+
+        # this way we are only keeping the first blob
+        for blob in blobs:
+            # Download the file content as a string
+            text_data = blob.download_as_text()
+            break
+        
+        return text_data
+
+    except NotFound:
+        print(f"The file '{source_blob_name}' does not exist in the bucket '{bucket_name}'.")
+        return None
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 def get_date_from_blob_name(blob_name):
     # Regular expression to find the date in the blob name
     match = re.search(r'\d{4}-\d{2}-\d{2}', blob_name)
@@ -215,3 +270,16 @@ def get_date_from_blob_name(blob_name):
         return match.group(0)
     else:
         return None
+    
+def get_text_between_comments(text, start_comment, end_comment):
+    start_index = text.find(start_comment)
+    if start_index == -1:
+        return None  # Start comment not found
+    end_index = text.find(end_comment, start_index + len(start_comment))
+    if end_index == -1:
+        return None  # End comment not found
+    return text[start_index + len(start_comment):end_index].strip()
+
+def read_md_file(filename):
+    with open(filename, "r", encoding="utf-8") as file:
+        return file.read()
