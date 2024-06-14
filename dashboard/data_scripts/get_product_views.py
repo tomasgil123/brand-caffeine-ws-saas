@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from dashboard.utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
+from dashboard.global_utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
 from dashboard.data_scripts.get_product_views_utils import get_page_views_for_all_months_since_date
 
 def get_product_views(client_name):
@@ -11,13 +11,23 @@ def get_product_views(client_name):
     bucket_name = "faire_page_views"
     source_blob_name = f"{client_name}"
 
-    df_page_views = download_csv_from_cloud_storage(bucket_name, source_blob_name)
+    df_page_views, blob_name = download_csv_from_cloud_storage(bucket_name, source_blob_name)
 
     # df_page_views is None we return an empty dataframe
     if df_page_views is None:
-        return pd.DataFrame()
+        return pd.DataFrame(), blob_name
     else:
-        return df_page_views
+        def preprocess_date(date):
+            if ' ' in date:
+                return datetime.strptime(date, '%Y-%m-%d %H:%M:%S').strftime('%Y/%m/%d')
+            else:
+                return datetime.strptime(date, '%Y-%m-%d').strftime('%Y/%m/%d')
+
+        df_page_views['date'] = df_page_views['date'].apply(preprocess_date)
+
+        df_page_views['date'] = pd.to_datetime(df_page_views['date'])
+
+        return df_page_views, blob_name
 
 def upload_product_views(client_name, cookie):
 

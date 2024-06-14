@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-from dashboard.utils import (read_md_file, get_text_between_comments)
+from dashboard.global_utils import (read_md_file, get_text_between_comments)
 
 class OpenaiInsights():
     def __init__(self):

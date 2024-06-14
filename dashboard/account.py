@@ -1,6 +1,6 @@
 import streamlit as st
 
-from dashboard.utils import (is_cookie_expired, get_brand_token)
+from dashboard.global_utils import (is_cookie_expired, get_brand_token)
 from dashboard.data_scripts.get_marketing_campaign_info import (upload_marketing_info)
 from dashboard.data_scripts.get_product_views import (upload_product_views)
 from dashboard.data_scripts.get_competitors_data import (upload_competitors_info, get_competitors_data, 
@@ -11,6 +11,7 @@ from dashboard.charts.competitors_charts_utils import (get_main_attributes)
 from dashboard.utils_chatgpt import OpenaiInsights
 
 from dashboard.recommendations.email_marketing import upload_marketing_recommendations
+from dashboard.recommendations.product_listings import get_product_listings_recommendations
 
 def build_account_dashboard(selected_client, brand_name_in_faire):
     st.markdown("""
@@ -148,3 +149,7 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
             st.error("Please, go to the 'Account' section and enter a cookie value.")
             return
         upload_marketing_recommendations(client_name=selected_client, cookie=st.session_state["user_cookie"])
+
+    if st.button("Create product listings recommendations"):
+
+        results = get_product_listings_recommendations(selected_client)

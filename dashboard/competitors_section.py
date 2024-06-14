@@ -3,7 +3,7 @@ import pandas as pd
 
 from dashboard.data_scripts.get_competitors_data import (get_competitors_data, get_competitors_recommendations_main_attributes,
                                                          get_competitors_summary_main_attributes)
-from dashboard.utils import get_date_from_blob_name
+from dashboard.global_utils import get_date_from_blob_name
 from dashboard.charts.competitors_charts import (number_reviews_per_brand, 
                                                  plot_radar_chart_competitors, 
                                                  get_competitors_minimum_order_data, 

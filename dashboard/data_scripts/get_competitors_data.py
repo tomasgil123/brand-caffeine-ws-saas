@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 from dashboard.data_scripts.get_competitors_data_utils import get_brands_data
-from dashboard.utils import (upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage, 
+from dashboard.global_utils import (upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage, 
                              download_csv_from_cloud_storage, upload_text_file_to_cloud_storage, download_text_file_from_cloud_storage)
 
 # vamos a tener dos recommendations:

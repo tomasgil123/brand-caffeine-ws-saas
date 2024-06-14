@@ -5,7 +5,7 @@ import pandas as pd
 
 from dashboard.create_client_dashboard import create_dashboard
 # from utils import save_user_log
-from dashboard.utils import get_data_from_google_spreadsheet
+from dashboard.global_utils import get_data_from_google_spreadsheet
 
 openai_api_key = st.secrets["openai_api_key"]
 
@@ -100,7 +100,7 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Account','Recommendations for Outranking Competitors', 'Recommendations to Improve Email Marketing', 'Recommendations for Review Optimization']
+report_options = ['Account','Recommendations for Outranking Competitors', 'Recommendations to Improve Email Marketing', 'Recommendations for Review Optimization', "Recommendations for Product Listing Optimization"]
 
 default_report_option = report_options[0]
 

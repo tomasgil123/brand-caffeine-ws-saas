@@ -165,7 +165,7 @@ def generate_conversion_rate_chart_by_category(data_original, date_last_update):
     # Display the chart in your Streamlit app
     st.pyplot(plt)
 
-def generate_pageviews_orders_ratio_chart(data_original, date_last_update):
+def generate_pageviews_orders_ratio_chart(data_original, date_last_update, top_category):
     data = data_original.copy()
     # Calculate the date range for the last 12 months
     end_date = pd.to_datetime(date_last_update)
@@ -174,23 +174,8 @@ def generate_pageviews_orders_ratio_chart(data_original, date_last_update):
     # Filter data for the last 12 months
     data = data[(data['date'] >= start_date) & (data['date'] <= end_date)]
 
-
-    # We find category with most views in the last 12 months
-    category_views_last_12_months = data.groupby('category')['visit_count'].sum()
-    most_viewed_category = category_views_last_12_months.idxmax()
-
-    options = data['category'].unique()
-    default_index = list(options).index(most_viewed_category)
-
-    selected_type = st.selectbox(
-        "Select Product Type",
-        options,
-        key="generate_pageviews_orders_ratio_chart",
-        index=default_index
-    )
-
     # Calculate the total page views for each product
-    total_page_views = data[data['category'] == selected_type].groupby('name')['visit_count'].sum().reset_index()
+    total_page_views = data[data['category'] == top_category].groupby('name')['visit_count'].sum().reset_index()
 
     # Sort the products by Page views in descending order
     total_page_views = total_page_views.sort_values(by='visit_count', ascending=False)
@@ -199,7 +184,7 @@ def generate_pageviews_orders_ratio_chart(data_original, date_last_update):
     filtered_products = total_page_views.head(12)['name']
 
     # Filter the original data to keep only the selected products
-    filtered_data = data[data['name'].isin(filtered_products) & (data['category'] == selected_type)]
+    filtered_data = data[data['name'].isin(filtered_products) & (data['category'] == top_category)]
     # Group by 'name' and aggregate the sum of 'visit_count', 'order_count', and 'sales_count'
     grouped_df = filtered_data.groupby('name').agg({
         'visit_count': 'sum',
@@ -234,7 +219,7 @@ def generate_pageviews_orders_ratio_chart(data_original, date_last_update):
     ax2.tick_params(axis='y')
 
     # Customize the chart
-    plt.title("Page Views and Conversion Rate for Products", fontsize=13, loc='left', pad=20, fontweight=500, color="#31333f", fontfamily="Microsoft Sans Serif")
+    plt.title(f"Page Views and Conversion Rate for {top_category} Products")
 
     # Set the y-axis limits to start from 0
     ax1.set_ylim(bottom=0)
@@ -255,8 +240,7 @@ def generate_pageviews_orders_ratio_chart(data_original, date_last_update):
     rounded_median = round(median, 2)
 
     st.markdown(f"""
-    Mean: {rounded_mean} %<br>
-    Median: {rounded_median} %
+    {top_category} Median: {rounded_median} %
     """, unsafe_allow_html=True)
 
 def generate_page_views_and_ratio_by_category_with_selector(data_original):
@@ -308,13 +292,22 @@ def generate_page_views_and_ratio_by_category_with_selector(data_original):
     # Display the plot using Streamlit
     st.pyplot(fig)
     
-def generate_page_views_and_ratio_by_product_with_selector(data_original):
+def generate_page_views_and_ratio_by_product_with_selector(data_original, top_category):
     
     # Create a copy of the original data
     data = data_original.copy()
     
     # Convert 'date' column to datetime
     data['date'] = pd.to_datetime(data['date'])
+
+    # we filter data by top_category
+    data = data[data['category'] == top_category]
+
+    # we keep only the 12 products with most page views in the category
+    top_products = data.groupby('name')['visit_count'].sum().sort_values(ascending=False).head(12).index
+
+    # we filter data by top_products
+    data = data[data['name'].isin(top_products)]
     
     # Find the default selected product with the most visits in 2023
     most_viewed_product = data.loc[data['date'].dt.year == 2023].groupby('name')['visit_count'].sum().idxmax()
@@ -367,3 +360,52 @@ def generate_page_views_and_ratio_by_product_with_selector(data_original):
 
     plt.legend()
     st.pyplot(plt)
+
+
+def sales_by_category(df_orders, df_order_items, df_page_views):
+
+    # we keep only orders of the last 12 months
+    current_date = pd.to_datetime('now')
+    one_year_ago = current_date - pd.DateOffset(months=12)
+    df_orders = df_orders[df_orders['brand_contacted_at_values'] >= one_year_ago]
+
+    # we merge df_order_items with df_page_views on column "product_token". We only want to add column "category"
+    df_page_views = df_page_views[['product_token', 'category']]
+    df_order_items = pd.merge(df_order_items, df_page_views, left_on=["product_token"], right_on=["product_token"])
+
+    # we merge df_orders with df_order_items on column "brand_order_token"
+    df_orders_merged = pd.merge(df_orders, df_order_items, left_on=["tokens"], right_on=["brand_order_token"])
+
+    # create a bar chart with categories 0n the x axis and percentage of sales on the y axis
+    # Group by category and sum the quantity sold
+    sales_by_category = df_orders_merged.groupby('category')['retailer_price'].sum()
+
+    # Calculate the total sales across all categories
+    total_sales = sales_by_category.sum()
+
+    # Calculate the percentage of total sales for each category
+    sales_percentage = (sales_by_category / total_sales) * 100
+
+    # Sort the sales percentages in descending order
+    sales_percentage = sales_percentage.sort_values(ascending=False)
+
+    # we keep only 5 first categories
+    sales_percentage = sales_percentage.head(5)
+
+    # Create a bar chart
+    # Create figure and axis
+    fig, ax = plt.subplots()
+
+    sales_percentage.plot(kind='bar', color='skyblue')
+
+    ax.set_title('Sales by Category (Last 12 Months)')
+    ax.set_xlabel('Category')
+    ax.set_ylabel('Percentage of Sales')
+    ax.set_xticklabels(sales_percentage.index, rotation=45)
+    ax.set_ylim(0, 100)  # Set y-axis limit to 0-100%
+
+    # add grid to the chart
+    ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+    # Display the chart in Streamlit
+    st.pyplot(fig)

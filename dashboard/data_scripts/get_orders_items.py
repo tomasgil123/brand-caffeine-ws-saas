@@ -48,7 +48,7 @@ def get_order_items_info(order_items):
             oi_product_variations.append("")
 
     # we create an object with the order items info
-    order_items_df = {
+    order_items = {
         "token": oi_tokens,
         "order_token": oi_order_tokens,
         "product_token": oi_product_tokens,
@@ -66,4 +66,4 @@ def get_order_items_info(order_items):
         "product_variations": oi_product_variations
     }
 
-    return order_items_df
+    return order_items

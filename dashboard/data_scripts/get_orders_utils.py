@@ -38,7 +38,23 @@ def get_orders_info_page(page_number, brand_token, cookie):
     retailer_website_urls = []
     retailer_store_types = []
 
-    items_order = {}
+    order_items_obj = {
+        "token": [],
+        "order_token": [],
+        "product_token": [],
+        "brand_order_token": [],
+        "product_name": [],
+        "product_option_name": [],
+        "suggested_retail_price": [],
+        "retailer_price": [],
+        "retailer_original_price": [],
+        "quantity": [],
+        "total_retailer_price": [],
+        "retailer_total": [],
+        "discount_percentage": [],
+        "localized_brand_order_number": [],
+        "product_variations": []
+    }
 
     page_count = 1
 
@@ -89,7 +105,11 @@ def get_orders_info_page(page_number, brand_token, cookie):
                     
                     # we add items order data to the dataframe
                     order_items = order["order_items"]
-                    combine_order_items_info(items_order, get_order_items_info(order_items))
+                    result_order_items = get_order_items_info(order_items)
+
+                    for key in order_items_obj.keys():
+                        order_items_obj[key].extend(result_order_items[key])
+
                 
 
                 break  # Successful request, exit the loop
@@ -121,7 +141,7 @@ def get_orders_info_page(page_number, brand_token, cookie):
         "retailer_store_types": retailer_store_types
     }
 
-    return data, items_order, page_count
+    return data, order_items_obj, page_count
 
 def find_first_older_date_index(brand_contacted_at_values, time_most_recent_campaign):
     # We check if the time_most_recent_campaign is bigger than any of the dates in start_sending_at
@@ -153,7 +173,23 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
     retailer_website_urls = []
     retailer_store_types = []
 
-    items_order = {}
+    order_items = {
+        "token": [],
+        "order_token": [],
+        "product_token": [],
+        "brand_order_token": [],
+        "product_name": [],
+        "product_option_name": [],
+        "suggested_retail_price": [],
+        "retailer_price": [],
+        "retailer_original_price": [],
+        "quantity": [],
+        "total_retailer_price": [],
+        "retailer_total": [],
+        "discount_percentage": [],
+        "localized_brand_order_number": [],
+        "product_variations": []
+    }
 
     # we loop over the different pages and get the orders info
     page_number = 1
@@ -177,7 +213,8 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
         retailer_website_urls.extend(data_orders["retailer_website_urls"])
         retailer_store_types.extend(data_orders["retailer_store_types"])
         # we append the items order data to the dataframe
-        combine_order_items_info(items_order, items_order_page)
+        for key in order_items.keys():
+            order_items[key].extend(items_order_page[key])
     else:
         tokens.extend(data_orders["tokens"][:first_older_date_index])
         creation_reasons.extend(data_orders["creation_reasons"][:first_older_date_index])
@@ -193,7 +230,8 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
         retailer_website_urls.extend(data_orders["retailer_website_urls"][:first_older_date_index])
         retailer_store_types.extend(data_orders["retailer_store_types"][:first_older_date_index])
         # we append the items order data to the dataframe
-        combine_order_items_info(items_order, items_order_page)
+        for key in order_items.keys():
+            order_items[key].extend(items_order_page[key])
 
     # Initialize a progress bar
     progress_bar = st.progress(0)
@@ -220,7 +258,8 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
                 retailer_website_urls.extend(data_orders["retailer_website_urls"])
                 retailer_store_types.extend(data_orders["retailer_store_types"])
                 # we append the items order data to the dataframe
-                combine_order_items_info(items_order, items_order_page)
+                for key in order_items.keys():
+                    order_items[key].extend(items_order_page[key])
             else:
                 tokens.extend(data_orders["tokens"][:first_older_date_index])
                 creation_reasons.extend(data_orders["creation_reasons"][:first_older_date_index])
@@ -236,7 +275,8 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
                 retailer_website_urls.extend(data_orders["retailer_website_urls"][:first_older_date_index])
                 retailer_store_types.extend(data_orders["retailer_store_types"][:first_older_date_index])
                 # we append the items order data to the dataframe
-                combine_order_items_info(items_order, items_order_page)
+                for key in order_items.keys():
+                    order_items[key].extend(items_order_page[key])
                 break
             progress_bar.progress(page_number / (page_count + 1))
 
@@ -256,4 +296,4 @@ def get_orders_info(brand_token, cookie, time_most_recent_campaign):
         "retailer_store_types": retailer_store_types
     }
 
-    return data, items_order
+    return data, order_items

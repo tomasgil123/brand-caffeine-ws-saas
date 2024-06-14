@@ -11,7 +11,7 @@ from dashboard.charts.email_marketing_charts import (get_email_marketing_kpis_la
 from dashboard.recommendations.email_marketing import (get_marketing_recommendations)
 
 
-from dashboard.utils import ( get_date_from_blob_name)
+from dashboard.global_utils import ( get_date_from_blob_name)
 
 def create_email_marketing_section(selected_client, type_plan, brand_name_in_faire):
 
@@ -86,7 +86,7 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         #         """)
         # get_email_marketing_kpis_last_30_days(df_email_marketing, date_last_update)
 
-        get_email_marketing_kpis_by_month(df_email_marketing)
+        # get_email_marketing_kpis_by_month(df_email_marketing)
 
         # sales_by_month(df_email_marketing, 'open_based_total_order_value', 'Total Sales Open emails (12 months)', date_last_update)
         # sales_by_month(df_email_marketing, 'click_based_total_order_value', 'Total Sales Click emails (12 months)', date_last_update)

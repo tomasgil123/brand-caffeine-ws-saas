@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime
 
-from dashboard.utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
+from dashboard.global_utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
 from dashboard.data_scripts.get_marketing_campaign_info_utils import get_marketing_campaigns_info
 
 def get_marketing_info(client_name):

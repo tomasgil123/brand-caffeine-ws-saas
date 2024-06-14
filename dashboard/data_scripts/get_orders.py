@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from dashboard.utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
+from dashboard.global_utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
 from dashboard.data_scripts.get_orders_utils import get_orders_info
 
 def get_orders_data(client_name):
@@ -14,7 +14,7 @@ def get_orders_data(client_name):
     df_orders, blob_name = download_csv_from_cloud_storage(bucket_name, source_blob_name)
 
     # df_orders is None we return an empty dataframe
-    if df_orders is None:
+    if df_orders is None or df_orders.empty:
         return pd.DataFrame(), blob_name
     else:
         df_orders['payout_total_values'] = df_orders['payout_total_values']/100
@@ -33,13 +33,13 @@ def get_order_items_data(client_name):
     bucket_name = "faire_orders"
     source_blob_name = f"{client_name}_orders_items"
 
-    df_order_items = download_csv_from_cloud_storage(bucket_name, source_blob_name)
+    df_order_items, blob_name = download_csv_from_cloud_storage(bucket_name, source_blob_name)
 
     # df_order_items is None we return an empty dataframe
-    if df_order_items is None:
-        return pd.DataFrame()
+    if df_order_items is None or df_order_items.empty:
+        return pd.DataFrame(), blob_name
     else:
-        return df_order_items
+        return df_order_items, blob_name
     
 def upload_orders_info(brand_token, client_name, cookie):
 

@@ -16,7 +16,7 @@ from dashboard.data_scripts.get_orders import (get_orders_data)
 
 from dashboard.charts.email_marketing_charts import (sales_for_quantile)
 
-from dashboard.utils import (get_date_from_blob_name, delete_file_from_cloud_storage, 
+from dashboard.global_utils import (get_date_from_blob_name, delete_file_from_cloud_storage, 
                              upload_dataframe_to_cloud_storage, download_csv_from_cloud_storage)
 
 def get_marketing_recommendations(client_name):
