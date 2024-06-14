@@ -49,20 +49,20 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
 
                 There are **{top_20_customers_without_purchases_last_60_days} customers** who belong to the top 20% of your best customers (those who have spent more than \${sales_for_top_20} in the last 12 months), have made a purchase between 60 to 120 days ago,  but have not made a purchase in the last 2 months.
 
-                1 - Create a new segment for these customers and launch targeted email campaigns to encourage them to start purchasing again.
+                1 - Create a new segment in Faire for these customers and launch targeted email campaigns to encourage them to start purchasing again.
                 
                 """)
         st.write("")
         st.markdown(f"""
                     There are **{customers_without_second_purchase_last_60_days} customers** who made a single purchase between 60 to 120 days ago, but have not bought from your store in the last 2 months.
 
-                1 - Create a new segment for these customers and launch targeted email campaigns to encourage them to make a second purchase.
+                1 - Create a new segment in Faire for these customers and launch targeted email campaigns to encourage them to make a second purchase.
 
                 2 - Ask them why they didn't buy again and try to understand what happened.
                 """)
         st.write("")
         st.markdown(f"""
-                    Top **10 customers** accounted for **{top_10_revenue_percentage}%** of our total revenue in the last 12 months.
+                    Top **10 customers** accounted for **{top_10_revenue_percentage}%** of your total revenue in the last 12 months.
 
                     1 - Send personalized emails or direct messages to encourage them to make additional purchases.
                 """)
@@ -82,7 +82,7 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         #         """)
         # get_email_marketing_kpis_last_30_days(df_email_marketing, date_last_update)
 
-        # get_email_marketing_kpis_by_month(df_email_marketing)
+        get_email_marketing_kpis_by_month(df_email_marketing)
 
         # sales_by_month(df_email_marketing, 'open_based_total_order_value', 'Total Sales Open emails (12 months)', date_last_update)
         # sales_by_month(df_email_marketing, 'click_based_total_order_value', 'Total Sales Click emails (12 months)', date_last_update)

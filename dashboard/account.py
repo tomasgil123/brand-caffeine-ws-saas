@@ -32,6 +32,10 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
     st.write("")
     st.write("")
 
+    st.markdown("""
+                ### Data
+                """)
+
     if st.button("Update Faire data"):
         # if st.session_state["user_cookie"] is empty display an error message
         if "user_cookie" not in st.session_state:
@@ -122,7 +126,9 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
         else:
             st.error("None of the brands entered seem to be currently present in Faire.")
             return
-        
+    st.markdown("""
+                ### Recommendations
+                """)
     if st.button("Create competitors recommendations"):
         df_competitors, _ = get_competitors_data(selected_client)
 

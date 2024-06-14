@@ -12,12 +12,11 @@ def create_dashboard(selected_client, selected_report, type_plan, brand_name_in_
                 """)
         build_account_dashboard(selected_client, brand_name_in_faire)
         
-    # if selected_report == "Page views":
+    if selected_report == "Recommendations for Review Optimization":
 
-    #     st.markdown("""
-    #             # Page Views
-    #             """)
-    #     create_page_views_section(selected_client, type_plan)
+        st.markdown("""
+                # Recommendations for Review Optimization
+                """)
     
     if selected_report == "Recommendations to Improve Email Marketing":
         st.markdown("""

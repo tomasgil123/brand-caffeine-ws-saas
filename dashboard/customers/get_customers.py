@@ -49,13 +49,13 @@ def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, le
                 "filters": [
                     {
                         "comparator": "GREATER_THAN",
-                        "datetime_value": 1707793200000,
+                        "datetime_value": greater_than,
                         "field": "LAST_ORDERED",
                         "type": "DATETIME"
                     },
                     {
                         "comparator": "LESS_THAN",
-                        "datetime_value": 1712977200000,
+                        "datetime_value": less_than,
                         "field": "LAST_ORDERED",
                         "type": "DATETIME"
                     }
@@ -66,7 +66,7 @@ def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, le
                 "filters": [
                     {
                         "comparator": "GREATER_THAN",
-                        "int_value": 260000,
+                        "int_value": amount,
                         "field": "ORDER_AMOUNT_CENTS",
                         "type": "MONEY"
                     }
@@ -84,13 +84,13 @@ def get_customers_without_second_purchase_last_60_days(cookie, greater_than, les
                     "filters": [
                         {
                             "comparator": "GREATER_THAN",
-                            "datetime_value": 1707793200000,
+                            "datetime_value": greater_than,
                             "field": "LAST_ORDERED",
                             "type": "DATETIME"
                         },
                         {
                             "comparator": "LESS_THAN",
-                            "datetime_value": 1712977200000,
+                            "datetime_value": less_than,
                             "field": "LAST_ORDERED",
                             "type": "DATETIME"
                         }
@@ -107,6 +107,52 @@ def get_customers_without_second_purchase_last_60_days(cookie, greater_than, les
                         }
                     ],
                     "label": "ORDER_COUNT"
+                }
+        ]
+    
+    return get_customers(custom_filters, cookie)
+
+def get_customers_with_purchase_last_60_days_no_review(cookie):
+
+    custom_filters =[
+                {
+                    "label": "ORDER_COUNT",
+                    "filters": [
+                        {
+                            "field": "ORDER_COUNT",
+                            "type": "NUMBER",
+                            "comparator": "GREATER_THAN",
+                            "int_value": 1
+                        }
+                    ]
+                },
+                {
+                    "label": "LAST_ORDER_DELIVERED_AT",
+                    "filters": [
+                        {
+                            "field": "LAST_ORDER_DELIVERED_AT",
+                            "type": "DATETIME",
+                            "comparator": "RELATIVE_GREATER_THAN_OR_EQUAL_TO",
+                            "datetime_value": -5184000000
+                        },
+                        {
+                            "field": "LAST_ORDER_DELIVERED_AT",
+                            "type": "DATETIME",
+                            "comparator": "RELATIVE_LESS_THAN_OR_EQUAL_TO",
+                            "datetime_value": 0
+                        }
+                    ]
+                },
+                {
+                    "label": "REVIEW_SUBMITTED",
+                    "filters": [
+                        {
+                            "field": "REVIEW_SUBMITTED",
+                            "type": "REVIEW_SUBMITTED_ENUM",
+                            "comparator": "EQUAL_TO",
+                            "review_submitted_type_value": "ORDERED_REVIEW_NOT_SUBMITTED"
+                        }
+                    ]
                 }
         ]
     

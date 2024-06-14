@@ -279,3 +279,4 @@ def top_10_customers(df, day_data_was_obtained):
     top_10_revenue_percentage = round((top_10_revenue / total_revenue) * 100, 2)
 
     return top_10_customers, top_10_revenue_percentage
+
