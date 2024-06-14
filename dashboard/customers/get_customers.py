@@ -42,7 +42,7 @@ def get_customers(custom_filters, cookie):
         print(f"An error occurred: {e}")
         return number_customers
     
-def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, less_than, amount):
+def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, less_than, amount, faire_direct=False):
 
     custom_filters = [
             {
@@ -75,9 +75,24 @@ def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, le
             }
         ]
     
+    if faire_direct:
+        custom_filters.append(
+            {
+                "filters": [
+                    {
+                        "field": "COMMISSION",
+                        "type": "NUMBER",
+                        "comparator": "EQUAL_TO",
+                        "int_value": 0
+                    }
+                ],
+                "label": "COMMISSION"
+            }
+        )
+    
     return get_customers(custom_filters, cookie)
 
-def get_customers_without_second_purchase_last_60_days(cookie, greater_than, less_than):
+def get_customers_without_second_purchase_last_60_days(cookie, greater_than, less_than, faire_direct=False):
 
     custom_filters = [
                 {
@@ -109,6 +124,21 @@ def get_customers_without_second_purchase_last_60_days(cookie, greater_than, les
                     "label": "ORDER_COUNT"
                 }
         ]
+    
+    if faire_direct:
+        custom_filters.append(
+            {
+                "filters": [
+                    {
+                        "field": "COMMISSION",
+                        "type": "NUMBER",
+                        "comparator": "EQUAL_TO",
+                        "int_value": 0
+                    }
+                ],
+                "label": "COMMISSION"
+            }
+        )
     
     return get_customers(custom_filters, cookie)
 

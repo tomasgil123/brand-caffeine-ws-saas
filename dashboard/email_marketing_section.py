@@ -37,6 +37,10 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
 
         top_20_customers_without_purchases_last_60_days = df_marketing_recommendations['get_top_20_customers_without_purchases_last_60_days'].values[0]
         customers_without_second_purchase_last_60_days = df_marketing_recommendations['get_customers_without_second_purchase_last_60_days'].values[0]
+
+        top_20_customers_without_purchases_last_60_days_faire_direct = df_marketing_recommendations['get_top_20_customers_without_purchases_last_60_days_faire_direct'].values[0]
+        customers_without_second_purchase_last_60_days_faire_direct = df_marketing_recommendations['get_customers_without_second_purchase_last_60_days_faire_direct'].values[0]
+
         sales_for_top_20 = sales_for_quantile(df=df_orders,day_data_was_obtained=date_last_update, quantile=0.8)
 
         top_10, top_10_revenue_percentage = top_10_customers(df=df_orders, day_data_was_obtained=date_last_update)
@@ -47,14 +51,14 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         
         st.markdown(f"""
 
-                There are **{top_20_customers_without_purchases_last_60_days} customers** who belong to the top 20% of your best customers (those who have spent more than \${sales_for_top_20} in the last 12 months), have made a purchase between 60 to 120 days ago,  but have not made a purchase in the last 2 months.
+                There are **{top_20_customers_without_purchases_last_60_days} customers ({top_20_customers_without_purchases_last_60_days_faire_direct} of them from Faire Direct)** who belong to the top 20% of your best customers (those who have spent more than \${sales_for_top_20} in the last 12 months), have made a purchase between 60 to 120 days ago,  but have not made a purchase in the last 2 months.
 
                 1 - Create a new segment in Faire for these customers and launch targeted email campaigns to encourage them to start purchasing again.
                 
                 """)
         st.write("")
         st.markdown(f"""
-                    There are **{customers_without_second_purchase_last_60_days} customers** who made a single purchase between 60 to 120 days ago, but have not bought from your store in the last 2 months.
+                    There are **{customers_without_second_purchase_last_60_days} customers ({customers_without_second_purchase_last_60_days_faire_direct} of them from Faire Direct)** who made a single purchase between 60 to 120 days ago, but have not bought from your store in the last 2 months.
 
                 1 - Create a new segment in Faire for these customers and launch targeted email campaigns to encourage them to make a second purchase.
 

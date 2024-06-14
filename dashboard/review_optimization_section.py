@@ -7,3 +7,9 @@
 # como hacemos para saber si un cliente ya dio su review o no?
 
 # cuantos clientes de los que no dejaron review pertenecen ademas al top 20%? a esos se les puede mandar un direct message
+
+
+
+# como se si las campanas para conseguir reviews tienen algun resultado?
+
+

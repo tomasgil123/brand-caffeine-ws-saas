@@ -76,7 +76,7 @@ def number_reviews_per_brand(df_competitors, highlight_brand):
     # Highlight the specific brand by changing the color of its bar
     for bar, brand in zip(bars, df_sorted["Brand Name"]):
         if brand == highlight_brand:
-            bar.set_color('orange')  # Change this to any color you prefer
+            bar.set_color('#4682B4')  # Change this to any color you prefer
 
     # Display the chart in your Streamlit app
     st.pyplot(fig)

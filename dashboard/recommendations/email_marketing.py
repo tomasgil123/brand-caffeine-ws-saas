@@ -55,20 +55,24 @@ def upload_marketing_recommendations(client_name, cookie):
         date_120_days_ago = today - timedelta(days=120)
 
         # Convert to Unix timestamp in milliseconds
-        timestamp_60_days_ago = int(date_60_days_ago.timestamp() * 1000)
-        timestamp_120_days_ago = int(date_120_days_ago.timestamp() * 1000)
+        timestamp_60_days_ago = int(date_60_days_ago.timestamp())*1000
+        timestamp_120_days_ago = int(date_120_days_ago.timestamp())*1000
 
         # Get the top 20 customers without purchases in the last 60 days
-        top_20_customers = get_top_20_customers_without_purchases_last_60_days(cookie, timestamp_60_days_ago, timestamp_120_days_ago, sales_for_top_20)
+        top_20_customers = get_top_20_customers_without_purchases_last_60_days(cookie, timestamp_120_days_ago, timestamp_60_days_ago , sales_for_top_20)
+        top_20_customers_faire_direct = get_top_20_customers_without_purchases_last_60_days(cookie,timestamp_120_days_ago, timestamp_60_days_ago, sales_for_top_20, True)
 
         # Get the customers without a second purchase in the last 60 days
-        customers_without_second_purchase = get_customers_without_second_purchase_last_60_days(cookie, timestamp_60_days_ago, timestamp_120_days_ago)
+        customers_without_second_purchase = get_customers_without_second_purchase_last_60_days(cookie,timestamp_120_days_ago, timestamp_60_days_ago)
+        customers_without_second_purchase_faire_direct = get_customers_without_second_purchase_last_60_days(cookie, timestamp_120_days_ago, timestamp_60_days_ago, True)
 
         # we create a dataframe with this columns get_top_20_customers_without_purchases_last_60_days and
         # get_customers_without_second_purchase_last_60_days
         df = pd.DataFrame({
             "get_top_20_customers_without_purchases_last_60_days": [top_20_customers],
-            "get_customers_without_second_purchase_last_60_days": [customers_without_second_purchase]
+            "get_top_20_customers_without_purchases_last_60_days_faire_direct": [top_20_customers_faire_direct],
+            "get_customers_without_second_purchase_last_60_days": [customers_without_second_purchase],
+            "get_customers_without_second_purchase_last_60_days_faire_direct": [customers_without_second_purchase_faire_direct]
         })
 
         bucket_name = "faire_marketing_info"
