@@ -46,7 +46,7 @@ def create_competitors_section(selected_client, brand_name_in_faire):
             st.write(summary_main_attributes)
 
         
-        plot_radar_chart_competitors(df_competitors)
+        # plot_radar_chart_competitors(df_competitors)
         
         number_reviews_per_brand(df_competitors, brand_name_in_faire)
 
