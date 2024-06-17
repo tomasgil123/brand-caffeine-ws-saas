@@ -1,6 +1,5 @@
 import pandas as pd
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 from dashboard.global_utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
 from dashboard.data_scripts.get_orders_utils import get_orders_info

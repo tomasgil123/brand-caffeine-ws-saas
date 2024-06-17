@@ -32,7 +32,7 @@ def get_customers(custom_filters, cookie, sort_by=None, sort_order=None, return_
     first_20_customers = {
         "retailer_token": [],
         "store_name": [],
-        "order_amount_cents": []
+        "order_amount": []
     }
 
     try:
@@ -43,7 +43,10 @@ def get_customers(custom_filters, cookie, sort_by=None, sort_order=None, return_
             number_customers = data['pagination_data']['total_results']
 
             if return_customers is True:
+
                 customers = data['customers']
+
+                #print("customers", customers)
 
                 for customer in customers:
                     first_20_customers['retailer_token'].append(customer.get('retailer_token', None))
@@ -207,39 +210,8 @@ def get_customers_with_purchase_last_60_days_no_review(cookie):
                 }
         ]
     
-    return get_customers(custom_filters, cookie)
-
-def get_customers_no_review_order_last_60_days(cookie):
-
-    custom_filters = [
-                {
-                    "filters": [
-                        {
-                            "field": "LAST_ORDER_DELIVERED_AT",
-                            "type": "DATETIME",
-                            "comparator": "RELATIVE_GREATER_THAN_OR_EQUAL_TO",
-                            "datetime_value": -5184000000
-                        },
-                        {
-                            "field": "LAST_ORDER_DELIVERED_AT",
-                            "type": "DATETIME",
-                            "comparator": "RELATIVE_LESS_THAN_OR_EQUAL_TO",
-                            "datetime_value": 0
-                        }
-                    ],
-                    "label": "LAST_ORDER_DELIVERED_AT"
-                },
-                {
-                    "filters": [
-                        {
-                            "comparator": "EQUAL_TO",
-                            "field": "REVIEW_SUBMITTED",
-                            "type": "REVIEW_SUBMITTED_ENUM",
-                            "review_submitted_type_value": "ORDERED_REVIEW_NOT_SUBMITTED"
-                        }
-                    ],
-                    "label": "REVIEW_SUBMITTED"
-                }
-    ]
-
-    return get_customers(custom_filters, cookie)
+    sort_by="ORDER_AMOUNT_CENTS"
+    sort_order="DESC"
+    return_customers=True
+    
+    return get_customers(custom_filters, cookie, sort_by=sort_by, sort_order=sort_order, return_customers=return_customers)

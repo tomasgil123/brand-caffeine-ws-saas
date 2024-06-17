@@ -1,11 +1,3 @@
-# que necesitamos para poder hacer las recomendaciones?
-
-# Primero necesitamos guardar ciertos datos en cloud storage
-
-# que datos tenemos que guardar?
-# - get_top_20_customers_without_purchases_last_60_days
-# - get_customers_without_second_purchase_last_60_days
-
 import pandas as pd
 from datetime import datetime, timedelta
 
@@ -59,12 +51,12 @@ def upload_marketing_recommendations(client_name, cookie):
         timestamp_120_days_ago = int(date_120_days_ago.timestamp())*1000
 
         # Get the top 20 customers without purchases in the last 60 days
-        top_20_customers = get_top_20_customers_without_purchases_last_60_days(cookie, timestamp_120_days_ago, timestamp_60_days_ago , sales_for_top_20)
-        top_20_customers_faire_direct = get_top_20_customers_without_purchases_last_60_days(cookie,timestamp_120_days_ago, timestamp_60_days_ago, sales_for_top_20, True)
+        top_20_customers, _ = get_top_20_customers_without_purchases_last_60_days(cookie, timestamp_120_days_ago, timestamp_60_days_ago , sales_for_top_20)
+        top_20_customers_faire_direct, _ = get_top_20_customers_without_purchases_last_60_days(cookie,timestamp_120_days_ago, timestamp_60_days_ago, sales_for_top_20, True)
 
         # Get the customers without a second purchase in the last 60 days
-        customers_without_second_purchase = get_customers_without_second_purchase_last_60_days(cookie,timestamp_120_days_ago, timestamp_60_days_ago)
-        customers_without_second_purchase_faire_direct = get_customers_without_second_purchase_last_60_days(cookie, timestamp_120_days_ago, timestamp_60_days_ago, True)
+        customers_without_second_purchase, _ = get_customers_without_second_purchase_last_60_days(cookie,timestamp_120_days_ago, timestamp_60_days_ago)
+        customers_without_second_purchase_faire_direct, _ = get_customers_without_second_purchase_last_60_days(cookie, timestamp_120_days_ago, timestamp_60_days_ago, True)
 
         # we create a dataframe with this columns get_top_20_customers_without_purchases_last_60_days and
         # get_customers_without_second_purchase_last_60_days

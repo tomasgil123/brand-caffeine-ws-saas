@@ -13,7 +13,7 @@ from dashboard.charts.competitors_charts_utils import (get_main_attributes)
 from dashboard.utils_chatgpt import OpenaiInsights
 
 from dashboard.recommendations.email_marketing import upload_marketing_recommendations
-from dashboard.recommendations.product_listings import get_product_listings_recommendations
+from dashboard.recommendations.reviews import upload_reviews_recommendations
 
 def build_account_dashboard(selected_client, brand_name_in_faire):
     st.markdown("""
@@ -174,6 +174,9 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
             return
         upload_marketing_recommendations(client_name=selected_client, cookie=st.session_state["user_cookie"])
 
-    if st.button("Create product listings recommendations"):
-
-        results = get_product_listings_recommendations(selected_client)
+    if st.button("Create reviews recommendations"):
+        if "user_cookie" not in st.session_state:
+            st.error("Please, go to the 'Account' section and enter a cookie value.")
+            return
+        
+        upload_reviews_recommendations(client_name=selected_client, cookie=st.session_state["user_cookie"])
