@@ -64,7 +64,7 @@ def create_review_optimization_section(selected_client):
         
         st.write("")
         st.write("")
-        st.write("Want assistance implementing these recommendations? Contact ben@brand-caffeine.com for a free expert consultation.")
+        st.write("Need help putting these recommendations into action? Book a free expert consultation [here](https://calendly.com/benschreiberbrandcaffeine/15min-faire-growth-intro-clone-1).")
         st.write("")
         st.write("")
         
