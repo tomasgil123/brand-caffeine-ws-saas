@@ -64,5 +64,5 @@ def create_product_listings_section(selected_client, type_plan):
         generate_pageviews_orders_ratio_chart(data_original=df_page_views, date_last_update=date_last_update, top_category=top_category)
         st.write("")
         st.write("")
-        st.write(f"Select a product from category {top_category} to see how its page views and conversion evolved rate over the past 12 months.")
+        st.write(f"Select a product from category {top_category} to see how its page views and conversion rate evolved over the past 12 months.")
         generate_page_views_and_ratio_by_product_with_selector(data_original=df_page_views, top_category=top_category)

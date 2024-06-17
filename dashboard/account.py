@@ -6,7 +6,9 @@ from dashboard.data_scripts.get_product_views import (upload_product_views)
 from dashboard.data_scripts.get_competitors_data import (upload_competitors_info, get_competitors_data, 
                                                          upload_competitors_recommendations_main_attributes,
                                                          upload_competitors_summary_main_attributes)
+from dashboard.data_scripts.get_reviews import (upload_reviews_data)
 from dashboard.data_scripts.get_orders import (upload_orders_info)
+
 from dashboard.charts.competitors_charts_utils import (get_main_attributes)
 from dashboard.utils_chatgpt import OpenaiInsights
 
@@ -90,6 +92,28 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
                 else:
                     st.error('An error occurred while updating the orders data.')
 
+    if st.button("Update Faire reviews data"):
+        if "user_cookie" not in st.session_state:
+            st.error("Please, go to the 'Account' section and enter a cookie value.")
+            return
+        # we check if the cookie is expired
+        is_expired = is_cookie_expired(st.session_state["user_cookie"])
+        if is_expired:
+            st.error("The cookie is expired. Please, go to the 'Account' section and enter a new cookie value.")
+            return
+        with st.spinner('Updating reviews data...'):
+            brand_token = get_brand_token(brand_name=brand_name_in_faire, cookie=st.session_state["user_cookie"])
+            if brand_token is None:
+                st.error("Brand name doesn't seem to belong a a brand currently in Faire.")
+                return
+            else:
+                result = upload_reviews_data(brand_token=brand_token, client_name=selected_client, cookie=st.session_state["user_cookie"])
+                if result:
+                    st.success('Reviews info updated!')
+                    st.experimental_rerun()
+                else:
+                    st.error('An error occurred while updating the reviews data.')
+    
     # we add some empty space
     st.write("")
     st.write("")

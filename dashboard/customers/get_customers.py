@@ -2,7 +2,7 @@
 import requests
 
 
-def get_customers(custom_filters, cookie):
+def get_customers(custom_filters, cookie, sort_by=None, sort_order=None, return_customers=False):
 
     endpoint = "https://www.faire.com/api/v3/crm/b_arceup81f2/get-customers"
 
@@ -24,7 +24,16 @@ def get_customers(custom_filters, cookie):
             }
         }
     
+    if sort_by is not None and sort_order is not None:
+        payload['sort_by'] = sort_by
+        payload['sort_order'] = sort_order
+    
     number_customers = 0
+    first_20_customers = {
+        "retailer_token": [],
+        "store_name": [],
+        "order_amount_cents": []
+    }
 
     try:
         response = requests.post(endpoint, headers=headers, json=payload)
@@ -33,14 +42,26 @@ def get_customers(custom_filters, cookie):
 
             number_customers = data['pagination_data']['total_results']
 
-            return number_customers
+            if return_customers is True:
+                customers = data['customers']
+
+                for customer in customers:
+                    first_20_customers['retailer_token'].append(customer.get('retailer_token', None))
+                    first_20_customers['store_name'].append(customer.get('store_name', None))
+                    order_amount = customer.get('order_amount', None)
+                    if order_amount is not None:
+                        first_20_customers['order_amount'].append(order_amount['amount_cents'])
+                    else:
+                        first_20_customers['order_amount'].append(None)
+
+            return number_customers, first_20_customers
         else:
             print(f"Request failed with status code {response.status_code}")
-            return number_customers
+            return number_customers, first_20_customers
         
     except Exception as e:
         print(f"An error occurred: {e}")
-        return number_customers
+        return number_customers, first_20_customers
     
 def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, less_than, amount, faire_direct=False):
 
@@ -186,4 +207,39 @@ def get_customers_with_purchase_last_60_days_no_review(cookie):
                 }
         ]
     
+    return get_customers(custom_filters, cookie)
+
+def get_customers_no_review_order_last_60_days(cookie):
+
+    custom_filters = [
+                {
+                    "filters": [
+                        {
+                            "field": "LAST_ORDER_DELIVERED_AT",
+                            "type": "DATETIME",
+                            "comparator": "RELATIVE_GREATER_THAN_OR_EQUAL_TO",
+                            "datetime_value": -5184000000
+                        },
+                        {
+                            "field": "LAST_ORDER_DELIVERED_AT",
+                            "type": "DATETIME",
+                            "comparator": "RELATIVE_LESS_THAN_OR_EQUAL_TO",
+                            "datetime_value": 0
+                        }
+                    ],
+                    "label": "LAST_ORDER_DELIVERED_AT"
+                },
+                {
+                    "filters": [
+                        {
+                            "comparator": "EQUAL_TO",
+                            "field": "REVIEW_SUBMITTED",
+                            "type": "REVIEW_SUBMITTED_ENUM",
+                            "review_submitted_type_value": "ORDERED_REVIEW_NOT_SUBMITTED"
+                        }
+                    ],
+                    "label": "REVIEW_SUBMITTED"
+                }
+    ]
+
     return get_customers(custom_filters, cookie)
