@@ -62,6 +62,12 @@ def create_review_optimization_section(selected_client):
                     
                     """)
         
+        st.write("")
+        st.write("")
+        st.write("Want assistance implementing these recommendations? Contact ben@brand-caffeine.com for a free expert consultation.")
+        st.write("")
+        st.write("")
+        
         st.markdown("""
                     #### Data summary:
                     """)

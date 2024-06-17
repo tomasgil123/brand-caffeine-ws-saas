@@ -70,7 +70,13 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
 
                     1 - Send personalized emails or direct messages to encourage them to make additional purchases.
                 """)
-
+        
+        st.write("")
+        st.write("")
+        st.write("Want assistance implementing these recommendations? Contact ben@brand-caffeine.com for a free expert consultation.")
+        st.write("")
+        st.write("")
+        
         st.markdown("""
                     #### Data summary:
                     """)

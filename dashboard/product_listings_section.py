@@ -57,6 +57,12 @@ def create_product_listings_section(selected_client, type_plan):
 
                 """)
             
+            st.write("")
+            st.write("")
+            st.write("Want assistance implementing these recommendations? Contact ben@brand-caffeine.com for a free expert consultation.")
+            st.write("")
+            st.write("")
+            
             st.markdown("""
                     #### Data summary:
                     """)
