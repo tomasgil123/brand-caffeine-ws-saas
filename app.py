@@ -100,7 +100,10 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Account','Recommendations for Outranking Competitors', 'Recommendations to Improve Email Marketing', 'Recommendations for Review Optimization', "Recommendations for Product Listing Optimization"]
+report_options = ['Recommendations for Outranking Competitors', 'Recommendations to Improve Email Marketing', 'Recommendations for Review Optimization', "Recommendations for Product Listing Optimization"]
+
+if os.environ['environment'] == 'dev':
+    report_options.append('Account')
 
 default_report_option = report_options[0]
 

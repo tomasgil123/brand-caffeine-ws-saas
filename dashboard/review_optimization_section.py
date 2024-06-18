@@ -44,7 +44,7 @@ def create_review_optimization_section(selected_client):
         number_retailers_with_reviews = df_retailers_with_reviews.shape[0]
 
         st.markdown("""
-                    #### Recommendations:
+                    #### Customized Recommendations:
                     """)
         
         st.markdown(f"""
@@ -59,8 +59,14 @@ def create_review_optimization_section(selected_client):
 
             1 - Send a direct message to these customers asking them to leave a review again.
                     
-                    
                     """)
+        
+        st.markdown("""
+                    #### Traits of a Top Shop:
+                    """)
+        st.markdown(f"""
+                    1 - Reviews are KEY to Seller success - and we ALWAYS recommend reaching out via Direct Message to request them. But you’ve only got 90 days after the order is delivered to do this. [Here’s what Faire recommends](https://www.faire.com/support/articles/360030186831).
+                """)
         
         st.write("")
         st.write("")
@@ -69,7 +75,7 @@ def create_review_optimization_section(selected_client):
         st.write("")
         
         st.markdown("""
-                    #### Data summary:
+                    #### Recommendation Details:
                     """)
         
         st.write("How the ratio reviews / orders evolved over the last 6 months:")

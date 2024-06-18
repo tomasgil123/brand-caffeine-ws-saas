@@ -43,7 +43,7 @@ def create_product_listings_section(selected_client, type_plan):
             sales_percentage_top_category_rounded = round(sales_percentage_top_category, 2)
 
             st.markdown("""
-                    #### Recommendations:
+                    #### Customized Recommendations:
                     """)
             
             st.markdown(f"""
@@ -57,6 +57,16 @@ def create_product_listings_section(selected_client, type_plan):
 
                 """)
             
+            st.markdown("""
+                    #### Traits of a Top Shop:
+                    """)
+            
+            st.markdown(f"""
+                    1 - Assure your top 10 best-selling products have video content. [Here is a helpful article](https://www.faire.com/blog/selling/how-to-use-video-in-your-brands-marketing/).
+                        
+                    2 - Make sure all of your initial product photos are on simple, white backgrounds. [You can find the Faire do’s + don’ts here](https://www.faire.com/support/articles/360016568092). (And make sure you have two photos or more for each product.)
+                """)
+            
             st.write("")
             st.write("")
             st.write("Need help putting these recommendations into action? Book a free expert consultation [here](https://calendly.com/benschreiberbrandcaffeine/15min-faire-growth-intro-clone-1).")
@@ -64,7 +74,7 @@ def create_product_listings_section(selected_client, type_plan):
             st.write("")
             
             st.markdown("""
-                    #### Data summary:
+                    #### Recommendation Details:
                     """)
         st.write(f"All products in the {top_category} category, along with their page views and conversion rates over the past 12 months.")
         generate_pageviews_orders_ratio_chart(data_original=df_page_views, date_last_update=date_last_update, top_category=top_category)

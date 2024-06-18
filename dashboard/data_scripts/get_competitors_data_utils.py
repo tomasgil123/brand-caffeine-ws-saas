@@ -3,6 +3,8 @@ import requests
 import time
 import streamlit as st
 
+from dashboard.utils_chatgpt import OpenaiInsights
+
 def get_brands_data(brand_ids):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -12,6 +14,8 @@ def get_brands_data(brand_ids):
 
     # Initialize a progress bar
     progress_bar = st.progress(0)
+
+    insights = OpenaiInsights()
 
     # Iterate over each brand ID and make a request
     for index, brand_id in enumerate(brand_ids):
@@ -46,6 +50,7 @@ def get_brands_data(brand_ids):
     small_batch = []
     upper_bound_lead_time_days = []
     lower_bound_lead_time_days = []
+    description = []
 
     # Iterate through the brand_list and extract the required information
     for brand_data in responses_brand_data:
@@ -53,6 +58,11 @@ def get_brands_data(brand_ids):
 
         brand_tokens.append(brand["token"])
         brand_names.append(brand["name"])
+
+        description_long = brand["description"]
+        description_summary = insights.generate_insights({"prompt_name": "Competitors - description - summary", "brand_name": "", "string_data": description_long})
+        description.append(description_summary)
+
         
         # Extract review info
         average_ratings.append(brand["brand_reviews_summary"]["average_rating"])
@@ -134,7 +144,8 @@ def get_brands_data(brand_ids):
         "Woman Owned": women_owned,
         "Small Batch": small_batch,
         "Upper Bound Lead Time Days": upper_bound_lead_time_days,
-        "Lower Bound Lead Time Days": lower_bound_lead_time_days
+        "Lower Bound Lead Time Days": lower_bound_lead_time_days,
+        "Description": description
     }
 
     return data

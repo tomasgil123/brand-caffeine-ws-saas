@@ -11,7 +11,7 @@ Summary of Differences: 1. Fulfillment Times: Latico Leathers has moderate lead 
 
 I want you to just output a bullet point for each summary difference, nothing else.
 
-Make sure the title of each bullet point is in bold.
+Make sure the title of each bullet point is in bold. Don't say "it" to refer to the {brand}.
 
 The dataframe will be delimited with four hashtags: ####
 
@@ -22,7 +22,7 @@ You are going to receive a string representation of a python dataframe.
 I want you to come up recommendations for {brand}.
 
 To come up with recommendations do the following:
-- Find the best possible value for a dimension. For example, for Lead Times is the lowest value and for reviews is the highest. We will call this value “Best value”
+- Find the best possible value for a dimension. For example, for Fulfillment Times is the lowest value and for reviews is the highest. We will call this value “Best value”
 - Find {brand} value for that dimension. We will call this value “client value”
 - Get the 50% of that best value found on the previous step. For example, if the best value is 2, then is 1. Another example, if the best value is 500 then is 250. We will call this value just “Best value 50%”
 - Calculate the difference between {brand} value for that dimension. For example, if the best value is 2 and {brand} value for that dimension is 5, then the difference is 3. We will call this value “The difference”
@@ -31,6 +31,19 @@ To come up with recommendations do the following:
     - If “Best value” is higher than “client value”, tell {brand} to try to get to “client value” plus “Best value 50%”
 
 I want you to just output a bullet point for each recommendation, nothing else. Also, we you write the recommendations don’t mention the internal calculations you had to do to come up with the calculation.
+
+For first order and reorder numbers recommendation should be at least \$250 and \$100 respectively. Don't mention higher values.
+
+Always use round numbers for the recommendations.
+
+Remember adding the symbol $ before first order and reorder numbers.
+
+When writing recommendations add the following to the beginning of the recommendation: 
+
+For fulfillment times: "Retailers on Faire can search Sellers by their fulfillment times. If yours is too long, you may be getting overlooked."
+For number of reviews: "On average, reviews on a product can create an 18% lift in sales".
+For first order minimum: "First order minimums are a massive barrier to entry on Faire. Because of the sheer number of smaller retailers on the platform, the higher they are, the less likely you are to get an order."
+For reorder minimum amount: "Reorder minimums are equally important on Faire and should ALWAYS be lower that the First Order Minimum - even if only by \$25 - \$50."
 
 Make sure the title of each point is in bold.
 
@@ -55,5 +68,9 @@ Only output the list of recommendations, nothing else.
 Make sure the title of each point is in bold.
 
 <!-- Competitors - brand values - summary -->
+
+<!-- Competitors - description - summary -->
+
+Summarize the following description in just two lines:
 
 <!-- end -->

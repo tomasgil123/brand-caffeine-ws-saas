@@ -46,7 +46,7 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         top_10, top_10_revenue_percentage = top_10_customers(df=df_orders, day_data_was_obtained=date_last_update)
 
         st.markdown("""
-                    #### Recommendations:
+                    #### Customized Recommendations:
                     """)
         
         st.markdown(f"""
@@ -78,7 +78,7 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         st.write("")
         
         st.markdown("""
-                    #### Data summary:
+                    #### Recommendation Details:
                     """)
         
         retailers_did_not_reorder(df_orders, date_last_update)
