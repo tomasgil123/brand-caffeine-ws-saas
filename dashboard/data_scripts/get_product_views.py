@@ -14,7 +14,7 @@ def get_product_views(client_name):
     df_page_views, blob_name = download_csv_from_cloud_storage(bucket_name, source_blob_name)
 
     # df_page_views is None we return an empty dataframe
-    if df_page_views is None:
+    if df_page_views is None or df_page_views.empty:
         return pd.DataFrame(), blob_name
     else:
         def preprocess_date(date):

@@ -22,9 +22,9 @@ def get_review_recommendations(client_name):
         return df_reviews_recommendations, blob_name
 
 
-def upload_reviews_recommendations(client_name, cookie):
+def upload_reviews_recommendations(brand_token, client_name, cookie):
 
-    number_customers, first_20_customers = get_customers_with_purchase_last_60_days_no_review(cookie)
+    number_customers, first_20_customers = get_customers_with_purchase_last_60_days_no_review(brand_token, cookie)
 
     # we create a dataframe with the first_20_customers
     df = pd.DataFrame(first_20_customers)

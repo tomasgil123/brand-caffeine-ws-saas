@@ -2,9 +2,9 @@
 import requests
 
 
-def get_customers(custom_filters, cookie, sort_by=None, sort_order=None, return_customers=False):
+def get_customers(brand_token, custom_filters, cookie, sort_by=None, sort_order=None, return_customers=False):
 
-    endpoint = "https://www.faire.com/api/v3/crm/b_arceup81f2/get-customers"
+    endpoint = f"https://www.faire.com/api/v3/crm/{brand_token}/get-customers"
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -60,13 +60,14 @@ def get_customers(custom_filters, cookie, sort_by=None, sort_order=None, return_
             return number_customers, first_20_customers
         else:
             print(f"Request failed with status code {response.status_code}")
+            print(response.text)
             return number_customers, first_20_customers
         
     except Exception as e:
         print(f"An error occurred: {e}")
         return number_customers, first_20_customers
     
-def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, less_than, amount, faire_direct=False):
+def get_top_20_customers_without_purchases_last_60_days(brand_token, cookie, greater_than, less_than, amount, faire_direct=False):
 
     custom_filters = [
             {
@@ -114,9 +115,9 @@ def get_top_20_customers_without_purchases_last_60_days(cookie, greater_than, le
             }
         )
     
-    return get_customers(custom_filters, cookie)
+    return get_customers(brand_token, custom_filters, cookie)
 
-def get_customers_without_second_purchase_last_60_days(cookie, greater_than, less_than, faire_direct=False):
+def get_customers_without_second_purchase_last_60_days(brand_token, cookie, greater_than, less_than, faire_direct=False):
 
     custom_filters = [
                 {
@@ -164,9 +165,9 @@ def get_customers_without_second_purchase_last_60_days(cookie, greater_than, les
             }
         )
     
-    return get_customers(custom_filters, cookie)
+    return get_customers(brand_token, custom_filters, cookie)
 
-def get_customers_with_purchase_last_60_days_no_review(cookie):
+def get_customers_with_purchase_last_60_days_no_review(brand_token, cookie):
 
     custom_filters =[
                 {
@@ -214,4 +215,4 @@ def get_customers_with_purchase_last_60_days_no_review(cookie):
     sort_order="DESC"
     return_customers=True
     
-    return get_customers(custom_filters, cookie, sort_by=sort_by, sort_order=sort_order, return_customers=return_customers)
+    return get_customers(brand_token, custom_filters, cookie, sort_by=sort_by, sort_order=sort_order, return_customers=return_customers)

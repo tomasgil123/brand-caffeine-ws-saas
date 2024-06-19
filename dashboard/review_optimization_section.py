@@ -53,9 +53,9 @@ def create_review_optimization_section(selected_client):
             
             1 - Create a new segment in Faire for customers that have made a purchase in the last 60 days but haven't left a review yet (**{customers_with_purchase_last_60_days_no_review} customers** match that condition) and launch targeted email campaigns to encourage them to leave a review.
 
-            2 - Send direct meesages to the top 20 customers (find the complete list in the data section) that have made a purchase in the last 60 days but haven't left a review yet. These customers have spent beetween \${round(min_order_amount)} and \${round(max_order_amount)} since they become customers.
+            2 - Send direct messages to the top 20 customers (find the complete list in the recommendation details section) that have made a purchase in the last 60 days but haven't left a review yet. These customers have spent beetween \${round(min_order_amount)} to \${round(max_order_amount)} since they become customers.
 
-            There are **{number_retailers_with_reviews} customers** that made a purchase in the last 60 days and haven't left a review for their last order, but have left one or more reviews before. They have already made a review so they are more likely to leave another one. You can find the complete list in the data section.
+            There are **{number_retailers_with_reviews} customers** that made a purchase in the last 60 days and haven't left a review for their last order, but have left one or more reviews before. They have already made a review so they are more likely to leave another one. You can find the complete list in the recommendation details section.
 
             1 - Send a direct message to these customers asking them to leave a review again.
                     

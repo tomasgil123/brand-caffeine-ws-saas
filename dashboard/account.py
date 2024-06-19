@@ -58,7 +58,7 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
                 result = upload_marketing_info(brand_token=brand_token, client_name=selected_client, cookie=st.session_state["user_cookie"])
                 if result:
                     st.success('Email marketing info updated!')
-                    st.experimental_rerun()
+                    #st.experimental_rerun()
                 else:
                     st.error('An error occurred while updating the email marketing data.')
         with st.spinner('Updating page views data...'):
@@ -119,6 +119,7 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
     st.write("")
 
     # Roma Leathers, Sarta, Sixtease Bags USA, Threaded Pear
+    # Keystone Farms Cheese, Smith's Country Cheese, Eichtens Cheese, Sweet Grass Dairy
     competitors = st.text_input("Enter a competitor names: (split with , )", key="competitor_names")
 
     if st.button("Update Faire competitors data"):
@@ -172,11 +173,18 @@ def build_account_dashboard(selected_client, brand_name_in_faire):
         if "user_cookie" not in st.session_state:
             st.error("Please, go to the 'Account' section and enter a cookie value.")
             return
-        upload_marketing_recommendations(client_name=selected_client, cookie=st.session_state["user_cookie"])
+        brand_token = get_brand_token(brand_name=brand_name_in_faire, cookie=st.session_state["user_cookie"])
+        if brand_token is None:
+            st.error("Brand name doesn't seem to belong a a brand currently in Faire.")
+            return
+        upload_marketing_recommendations(brand_token=brand_token, client_name=selected_client, cookie=st.session_state["user_cookie"])
 
     if st.button("Create reviews recommendations"):
         if "user_cookie" not in st.session_state:
             st.error("Please, go to the 'Account' section and enter a cookie value.")
             return
-        
-        upload_reviews_recommendations(client_name=selected_client, cookie=st.session_state["user_cookie"])
+        brand_token = get_brand_token(brand_name=brand_name_in_faire, cookie=st.session_state["user_cookie"])
+        if brand_token is None:
+            st.error("Brand name doesn't seem to belong a a brand currently in Faire.")
+            return
+        upload_reviews_recommendations(brand_token=brand_token, client_name=selected_client, cookie=st.session_state["user_cookie"])

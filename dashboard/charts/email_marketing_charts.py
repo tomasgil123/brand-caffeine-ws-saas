@@ -167,13 +167,10 @@ def sales_by_month(df, type_action, title, date_last_update):
 def retailers_did_not_reorder(df, day_data_was_obtained):
     df = df.copy()
     # Calculate the date 12 months ago from today
-    last_12_months_date = day_data_was_obtained - timedelta(days=365)
-
-    # Filter the DataFrame for the last 12 months
-    df_last_12_months = df[df['brand_contacted_at_values'] >= last_12_months_date]
+    df_filtered_2023 = df[df['brand_contacted_at_values'].dt.year == 2023]
 
     # Filter by 'very_first_order_for_brand_values' equal to True
-    df_filtered_very_first = df_last_12_months[df_last_12_months['very_first_order_for_brand_values'] | df_last_12_months['first_order_for_brand_values']]
+    df_filtered_very_first = df_filtered_2023[df_filtered_2023['very_first_order_for_brand_values'] | df_filtered_2023['first_order_for_brand_values']]
 
     # Create an array of unique retailer_tokens
     unique_retailer_tokens = df_filtered_very_first['retailer_tokens'].unique()
@@ -212,7 +209,7 @@ def retailers_did_not_reorder(df, day_data_was_obtained):
     fig, ax = plt.subplots()
 
     ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', startangle=140)
-    ax.set_title('Percentage of Retailers with Only One Order (last 12 months)')
+    ax.set_title('Percentage of Retailers with Only One Order (Year 2023)')
     
     # Display chart in Streamlit
     st.pyplot(fig)

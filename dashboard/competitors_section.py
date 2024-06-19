@@ -14,7 +14,7 @@ def create_competitors_section(selected_client, brand_name_in_faire):
     df_competitors, blob_name = get_competitors_data(selected_client)
     
     if df_competitors is None or df_competitors.empty:
-        st.write("No competitors data available. Click the button below to update the data.")
+        st.write("No competitors data available. Go to the 'Account' section to update it.")
     
     if blob_name is not None:
         date_last_update = get_date_from_blob_name(blob_name)
