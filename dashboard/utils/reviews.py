@@ -101,6 +101,19 @@ def get_retailers_with_reviews_purchase_last_60_days(df_orders, df_reviews, data
     # order by review count descending
     final_retailers = final_retailers.sort_values(by='review_count', ascending=False)
 
+    # we do a left join with df_orders on column retailer_names and we only add retailer_tokens column
+    final_retailers = pd.merge(final_retailers, df_orders[['retailer_names', 'retailer_tokens']], left_on='retailer_name', right_on='retailer_names', how='left')
+
+    # we drop duplicate rows
+    final_retailers = final_retailers.drop_duplicates(subset='retailer_name')
+
+    # we drop column retailer_names
+    final_retailers = final_retailers.drop(columns=['retailer_names'])
+
+    final_retailers['retailer_tokens'] = final_retailers['retailer_tokens'].apply(lambda x: f"https://www.faire.com/brand-portal/messages/{x}")
+
+    final_retailers['retailer_tokens'] = final_retailers['retailer_tokens'].apply(lambda x: f'<a href="{x}" target="_blank">Send a DM</a>')
+
     # reset index
     final_retailers = final_retailers.reset_index(drop=True)
 

@@ -85,7 +85,10 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         retailers_did_not_reorder(df_orders, date_last_update)
 
         st.write("Your top 10 customers and how much they spent in the last 12 months:")
-        st.dataframe(top_10)
+
+        top_10.columns = ['Retailer Name', 'Total Revenue', 'Send a DM']
+
+        st.write(top_10.to_html(escape=False, index=False), unsafe_allow_html=True)
         
         # st.markdown("""
         #         ### Email performance review

@@ -268,6 +268,16 @@ def top_10_customers(df, day_data_was_obtained):
     # Calculate top 10 customers
     top_10_customers = sales_by_retailer.head(10)
 
+    # we make a left join top_10_customers to add "retailer_tokens" column
+    top_10_customers = top_10_customers.merge(df[['retailer_tokens', 'retailer_names']], on='retailer_names', how='left')
+
+    # keep unique rows
+    top_10_customers = top_10_customers.drop_duplicates(subset=['retailer_names'])
+    
+    top_10_customers['retailer_tokens'] = top_10_customers['retailer_tokens'].apply(lambda x: f"https://www.faire.com/brand-portal/messages/{x}")
+
+    top_10_customers['retailer_tokens'] = top_10_customers['retailer_tokens'].apply(lambda x: f'<a href="{x}" target="_blank">Send a DM</a>')
+
     # Calculate total revenue
     total_revenue = sales_by_retailer['payout_total_values'].sum()
 

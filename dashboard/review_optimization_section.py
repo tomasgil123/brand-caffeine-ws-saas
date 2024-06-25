@@ -84,6 +84,8 @@ def create_review_optimization_section(selected_client):
 
         st.write("Retailers that made a purchase in the last 60 days and haven't left a review for their last order, but have left one or more reviews before:")
 
-        st.dataframe(df_retailers_with_reviews)
+        df_retailers_with_reviews.columns = ['Retailer Name', 'Review Count', 'Send a DM']
+
+        st.write(df_retailers_with_reviews.to_html(escape=False, index=False), unsafe_allow_html=True)
 
         
