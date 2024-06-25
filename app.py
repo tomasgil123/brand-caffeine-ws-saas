@@ -100,14 +100,15 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Recommendations for Outranking Competitors', 'Recommendations to Improve Email Marketing', 'Recommendations for Review Optimization', "Recommendations for Product Listing Optimization"]
+report_options = ['Email Improvements', 'Increase Reviews', "Product Listing Optimization", 'Competitor Spying']
+
 
 if os.environ['environment'] == 'dev':
     report_options.append('Account')
 
 default_report_option = report_options[0]
 
-st.sidebar.title(st.session_state['user_name'])
+st.sidebar.title(st.session_state["brand_name_in_faire"])
 
 report_option_selected = st.sidebar.radio("Select an app section", options=report_options, index=report_options.index(default_report_option), key = 2)
 
