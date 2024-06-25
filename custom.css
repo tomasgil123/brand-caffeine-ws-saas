@@ -69,3 +69,18 @@ p {
     color: #FF0000;
     font-weight: 600;
 }
+.consultation-button {
+    background-color: #e3c52b;
+    border: none;
+    color: white !important;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none !important;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}

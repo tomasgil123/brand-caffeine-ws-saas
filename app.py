@@ -100,7 +100,7 @@ st.sidebar.image('brand_caffeine_logo.png', caption='', width=150)
 
 # save_user_log(st.session_state["user_name"])
 
-report_options = ['Email Improvements', 'Increase Reviews', "Product Listing Optimization", 'Competitor Spying']
+report_options = ['Recommendations summary','Email Improvements', 'Increase Reviews', "Product Listing Optimization", 'Competitor Spying']
 
 
 if os.environ['environment'] == 'dev':

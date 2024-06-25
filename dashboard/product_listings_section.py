@@ -69,7 +69,8 @@ def create_product_listings_section(selected_client, type_plan):
             
             st.write("")
             st.write("")
-            st.write("Need help putting these recommendations into action? Book a free expert consultation [here](https://calendly.com/benschreiberbrandcaffeine/15min-faire-growth-intro-clone-1).")
+            st.write("Need help putting these recommendations into action?")
+            st.markdown('<a href="https://calendly.com/benschreiberbrandcaffeine/15min-faire-growth-intro-clone-1" class="consultation-button" target="_blank">Book a free expert consultation</a>', unsafe_allow_html=True)
             st.write("")
             st.write("")
             
