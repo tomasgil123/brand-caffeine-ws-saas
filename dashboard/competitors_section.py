@@ -7,7 +7,7 @@ from dashboard.global_utils import get_date_from_blob_name
 from dashboard.charts.competitors_charts import (number_reviews_per_brand, 
                                                  plot_radar_chart_competitors, 
                                                  get_competitors_minimum_order_data, 
-                                                 get_competitors_fulfillment_data)
+                                                 get_competitors_fulfillment_data, get_brands_best_sellers, get_brands_new_products)
 
 def create_competitors_section(selected_client, brand_name_in_faire):
     
@@ -60,4 +60,14 @@ def create_competitors_section(selected_client, brand_name_in_faire):
         get_competitors_minimum_order_data(df_competitors, brand_name_in_faire)
 
         get_competitors_fulfillment_data(df_competitors, brand_name_in_faire)
+
+        if brand_name_in_faire == "Latico Leathers":
+            df_competitors_products = pd.read_csv("./dashboard/product_info_latico.csv")
+
+            # we do a left join between df_competitors_products and df_competitors on column Brand ID and Brand Token
+            df_competitors_products = pd.merge(df_competitors_products, df_competitors[['Brand Token', 'Brand Name']], left_on='Brand ID', right_on='Brand Token', how='left')
+            
+            get_brands_best_sellers(df_competitors_products, highlight_brand=brand_name_in_faire, main_category="Crossbody Bags")
+
+            get_brands_new_products(df_competitors_products, highlight_brand=brand_name_in_faire, main_category="Crossbody Bags")
 

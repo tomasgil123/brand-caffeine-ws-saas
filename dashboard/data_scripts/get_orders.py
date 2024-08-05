@@ -1,9 +1,11 @@
 import pandas as pd
 from datetime import datetime
+import streamlit as st
 
 from dashboard.global_utils import (download_csv_from_cloud_storage, upload_dataframe_to_cloud_storage, delete_file_from_cloud_storage)
 from dashboard.data_scripts.get_orders_utils import get_orders_info
 
+#@st.cache_data(ttl=3600)  # cache data for 1 hour
 def get_orders_data(client_name):
 
     # Get the data from the Google Cloud Storage bucket
@@ -26,6 +28,7 @@ def get_orders_data(client_name):
 
         return df_orders, blob_name
 
+#@st.cache_data(ttl=3600)  # cache data for 1 hour
 def get_order_items_data(client_name):
 
     # Get the data from the Google Cloud Storage bucket
@@ -60,7 +63,7 @@ def upload_orders_info(brand_token, client_name, cookie):
         time_most_recent_campaign = df_current_orders['brand_contacted_at_values'].max()
         # we substract a month to the time_most_recent_campaign
         # we do this because some campaign attributes could have been updated. We assume older campaigns don't get updated anymore
-        time_most_recent_campaign = time_most_recent_campaign - 2630304000
+        time_most_recent_campaign = time_most_recent_campaign.timestamp() * 1000 - 2630304000
     
     data_orders, data_order_items = get_orders_info(brand_token, cookie=cookie, time_most_recent_campaign=time_most_recent_campaign)
 

@@ -105,6 +105,7 @@ report_options = ['Recommendations summary','Email Improvements', 'Increase Revi
 
 if os.environ['environment'] == 'dev':
     report_options.append('Account')
+    report_options.append('Analytics Panel')
 
 default_report_option = report_options[0]
 

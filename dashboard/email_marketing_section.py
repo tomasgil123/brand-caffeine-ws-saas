@@ -84,11 +84,26 @@ def create_email_marketing_section(selected_client, type_plan, brand_name_in_fai
         
         retailers_did_not_reorder(df_orders, date_last_update)
 
-        st.write("Your top 10 customers and how much they spent in the last 12 months:")
+        st.write("Your top 10 customers and how much they spent in the last 12 months (in red clients that haven't made a purchase in the last 60 days):")
 
-        top_10.columns = ['Retailer Name', 'Total Revenue', 'Send a DM']
+        top_10.columns = ['Retailer Name', 'Total Revenue', 'Date Last Purchase', 'Days Since Last Purchase', 'Send a DM']
 
-        st.write(top_10.to_html(escape=False, index=False), unsafe_allow_html=True)
+        # Function to color rows
+        def color_rows(row):
+            if row['Days Since Last Purchase'] > 60:
+                return ['background-color: #ffcccb'] * len(row)
+            return [''] * len(row)
+        
+        # we remove top_10 index
+        top_10.reset_index(drop=True, inplace=True)
+
+        # Apply the styling
+        styled_top_10 = top_10.style.apply(color_rows, axis=1)
+
+        styled_top_10 = styled_top_10.format({'Total Revenue': '${:,.2f}'})
+
+        # Display the styled DataFrame
+        st.write(styled_top_10.to_html(escape=False, index=True), unsafe_allow_html=True)
         
         # st.markdown("""
         #         ### Email performance review

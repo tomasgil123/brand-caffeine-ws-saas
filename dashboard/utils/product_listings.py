@@ -4,6 +4,11 @@ from datetime import datetime, timedelta
 
 def get_category_with_most_sales(df_orders, df_order_items, df_page_views):
 
+    # we copy dataframes
+    df_orders = df_orders.copy()
+    df_order_items = df_order_items.copy()
+    df_page_views = df_page_views.copy()
+
     # we keep only orders of the last 12 months
     current_date = pd.to_datetime('now')
     one_year_ago = current_date - pd.DateOffset(months=12)

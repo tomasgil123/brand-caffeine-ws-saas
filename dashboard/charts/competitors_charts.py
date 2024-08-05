@@ -167,3 +167,60 @@ def get_competitors_fulfillment_data(data, special_brand):
 
     # Display the chart using Streamlit
     st.pyplot(fig)
+
+def get_brands_best_sellers(df, highlight_brand, main_category):
+    # Count the number of bestsellers per brand
+    faire_bestseller_count = df[df["Badge List"] == "FAIRE_BESTSELLER"].groupby("Brand Name").size()
+    faire_bestseller_count = faire_bestseller_count.reset_index()
+    faire_bestseller_count.columns = ["Brand Name", "Bestseller Count"]
+
+    # Sort the brands in descending order based on the number of bestsellers
+    faire_bestseller_count = faire_bestseller_count.sort_values(by="Bestseller Count", ascending=False)
+
+    # Create matplotlib chart
+    fig, ax = plt.subplots()
+    bars = ax.bar(faire_bestseller_count["Brand Name"], faire_bestseller_count["Bestseller Count"], color='#ADD8E6')
+
+    # Highlight the specific brand with a different color
+    for bar, brand in zip(bars, faire_bestseller_count["Brand Name"]):
+        if brand == highlight_brand:
+            bar.set_color('#4682B4')
+
+    # Set the title and labels for the chart displaying the number of bestsellers
+    ax.set_xlabel('Brand')
+    ax.set_ylabel(f'Number of Bestsellers')
+    ax.set_xticklabels(faire_bestseller_count["Brand Name"], rotation=45, ha='right')
+    plt.title(f'Number of Bestsellers per Brand for Category {main_category}', loc='left')
+
+    # Display the chart in your Streamlit app
+    st.pyplot(fig)
+
+def get_brands_new_products(df, highlight_brand, main_category):
+    # Create a list of all unique brand names
+    all_brands = df["Brand Name"].unique()
+
+    # Count the number of new products per brand
+    new_products_count = df[df["Is New"] == True].groupby("Brand Name").size()
+    new_products_count = new_products_count.reindex(all_brands, fill_value=0).reset_index()
+    new_products_count.columns = ["Brand Name", "New Product Count"]
+
+    # Sort the brands in descending order based on the number of new products
+    new_products_count = new_products_count.sort_values(by="New Product Count", ascending=False)
+
+    # Create matplotlib chart
+    fig, ax = plt.subplots()
+    bars = ax.bar(new_products_count["Brand Name"], new_products_count["New Product Count"], color='#ADD8E6')
+
+    # Highlight the specific brand with a different color
+    for bar, brand in zip(bars, new_products_count["Brand Name"]):
+        if brand == highlight_brand:
+            bar.set_color('#4682B4')
+
+    # Set the title and labels for the chart displaying the number of new products
+    ax.set_xlabel('Brand')
+    ax.set_ylabel('Number of New Products')
+    ax.set_xticklabels(new_products_count["Brand Name"], rotation=45, ha='right')
+    plt.title(f'Number of New Products per Brand for Category {main_category}', loc='left')
+
+    # Display the chart in your Streamlit app
+    st.pyplot(fig)

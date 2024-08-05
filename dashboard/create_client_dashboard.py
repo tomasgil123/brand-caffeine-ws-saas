@@ -5,6 +5,7 @@ from dashboard.product_listings_section import create_product_listings_section
 from dashboard.email_marketing_section import create_email_marketing_section
 from dashboard.competitors_section import create_competitors_section
 from dashboard.review_optimization_section import create_review_optimization_section
+from dashboard.analytics_section import create_analytics_section
 
 def create_dashboard(selected_client, selected_report, type_plan, brand_name_in_faire):
 
@@ -43,17 +44,19 @@ def create_dashboard(selected_client, selected_report, type_plan, brand_name_in_
                 1 - Optimize fulfillment times, first order minimum and reorder minimums to match or beat competitors.
 
                 """)
-        
-       
-
-
-
 
     if selected_report == "Account":
         st.markdown("""
                 # Account
                 """)
         build_account_dashboard(selected_client, brand_name_in_faire)
+
+    if selected_report == "Analytics Panel":
+        st.markdown("""
+                # Analytics Panel
+                """)
+        create_analytics_section(selected_client, type_plan, brand_name_in_faire)
+        
         
     if selected_report == "Increase Reviews":
         
